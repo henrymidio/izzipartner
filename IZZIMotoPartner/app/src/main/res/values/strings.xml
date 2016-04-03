@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">IZZI MotoPartner</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_corridas">Corridas</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_detalhes_corrida">DetalhesCorrida</string>
+    <string name="title_activity_login">login</string>
+</resources>
