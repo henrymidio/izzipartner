@@ -36,6 +36,7 @@ import java.util.Map;
 
 import cardapp.henrique.com.br.cwcourier.network.NetworkConnection;
 import cardapp.henrique.com.br.cwcourier.pojo.Entregador;
+import cardapp.henrique.com.br.cwcourier.services.TrackService;
 import io.realm.Realm;
 
 public class MapsActivity extends AppCompatActivity implements
@@ -52,10 +53,10 @@ public class MapsActivity extends AppCompatActivity implements
     private Button btnSair;
     private MarkerOptions mo;
     private Entregador entregador;
-    Realm realm;
     String nome;
     String foto;
     long id;
+    private Intent tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,6 @@ public class MapsActivity extends AppCompatActivity implements
 
     protected void onStop() {
         mGoogleApiClient.disconnect();
-        realm.close();
         super.onStop();
     }
 
@@ -167,7 +167,7 @@ public class MapsActivity extends AppCompatActivity implements
 
     public void setaInformacoesUser(){
 
-        realm = Realm.getInstance(this);
+        Realm realm = Realm.getInstance(this);
         entregador = realm.where(Entregador.class).findFirst();
 
         if(entregador.isValid()) {
@@ -185,6 +185,8 @@ public class MapsActivity extends AppCompatActivity implements
 
         }
 
+        realm.close();
+
     }
 
     public void alteraBotaoLogin(boolean status){
@@ -194,9 +196,13 @@ public class MapsActivity extends AppCompatActivity implements
             tvStatus.setText("ONLINE");
 
             //Altera status do user
+            Realm realm = Realm.getInstance(this);
+            entregador = realm.where(Entregador.class).findFirst();
             realm.beginTransaction();
             entregador.setStatus(true);
             realm.commitTransaction();
+            realm.close();
+
 
         } else {
             btnEntrar.setVisibility(Button.VISIBLE);
@@ -204,9 +210,12 @@ public class MapsActivity extends AppCompatActivity implements
             tvStatus.setText("OFFLINE");
 
             //Altera status do user
+            Realm realm = Realm.getInstance(this);
+            entregador = realm.where(Entregador.class).findFirst();
             realm.beginTransaction();
             entregador.setStatus(false);
             realm.commitTransaction();
+            realm.close();
         }
     }
 
@@ -249,9 +258,17 @@ public class MapsActivity extends AppCompatActivity implements
         int newState = 0;
         if(v == R.id.btnEntrar){
             newState = 1;
+            //Inicia o service de rastreamento
+            tracker = new Intent(this, TrackService.class);
+            tracker.setAction("TRACK");
+            startService(tracker);
         }
         else if(v == R.id.btnSair){
             newState = 0;
+            //Interrompe o service de rastreamento
+            tracker = new Intent(this, TrackService.class);
+            tracker.setAction("TRACK");
+            stopService(tracker);
         }
 
         // Instantiate the RequestQueue.

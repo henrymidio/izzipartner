@@ -37,7 +37,7 @@ public class MyGCMListenerService extends GcmListenerService {
 
         Intent intent = new Intent(this, NovaCorrida.class);
         intent.putExtra("frete", data.getString("frete"));
-        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(pi);
 
         builder.setVibrate(new long[]{1000, 1000, 1000, 1000});

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -75,6 +76,9 @@ public class NovaCorrida extends AppCompatActivity {
                 })
                 .create();
 
+        //Criar Realm Object da nova corrida para armazenamento
+        corrida = gson.fromJson(frete, Corrida.class);
+
     }
 
     public void novaCorridaAction(View v){
@@ -83,71 +87,50 @@ public class NovaCorrida extends AppCompatActivity {
             finish();
         }
         else if(id == aceitar.getId()) {
-            armazenaCorrida();
-
-
-
-            Intent it = new Intent(this, DetalhesCorrida.class);
-            it.putExtra("id", corrida.getId());
-            startActivity(it);
-            finish();
+            aceitaCorrida();
         }
     }
 
     public void armazenaCorrida(){
 
-        corrida = gson.fromJson(frete, Corrida.class);
         realm.copyToRealmOrUpdate(corrida);
         realm.commitTransaction();
     }
 
-    public boolean aceitaCorrida(){
-        /*
+    public void aceitaCorrida(){
         // Instantiate the RequestQueue.
         NetworkConnection nc = NetworkConnection.getInstance(getApplicationContext());
         RequestQueue queue = nc.getRequestQueue();
-        String path = "http://cardappweb.com/motofrete/motoqueiro/webservice/update-status.php";
+        String url = "http://cardappweb.com/motofrete/motoqueiro/confirma-entrega.php?motofrete_id="+corrida.getId()+"&id_entregador="+id_entregador;
 
-        //Apenas para deixar acessível dentro da passagem de parâmetros
-        final long idCourier = id;
-        final int novoStatus = newState;
+        StringRequest sr = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-        // Request a string response from the provided URL.
-        StringRequest sr = new StringRequest(Request.Method.POST, path,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                if(response.startsWith("Suc")) {
 
-                        if(response.trim().equals("1")){
-                            alteraBotaoLogin(true);
-                        }
-                        else {
-                            alteraBotaoLogin(false);
-                        }
+                    armazenaCorrida();
 
-
-                    }
-                }, new Response.ErrorListener() {
-
+                    Intent it = new Intent(NovaCorrida.this, DetalhesCorrida.class);
+                    it.putExtra("id", corrida.getId());
+                    startActivity(it);
+                    finish();
+                } else if(response.startsWith("Esta")) {
+                    Toast.makeText(getApplicationContext(), "Esta corrida foi remanejada", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ocorreu um erro. Entre em contato com a central.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("Err", error.getMessage());
+                Toast.makeText(getApplicationContext(), "Servidor não encontrado", Toast.LENGTH_LONG).show();
             }
-
-
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id", String.valueOf(idCourier));
-                params.put("status", String.valueOf(novoStatus));
-                return params;
-            }
-        };
+        });
 
         queue.add(sr);
-        */
-        return true;
     }
 
     @Override
