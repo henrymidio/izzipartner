@@ -32,7 +32,8 @@ public class DetalhesCorrida extends AppCompatActivity {
     private EditText etOrigem;
     private EditText etDestino;
     private EditText etContato;
-    private EditText etReferencia;
+    private EditText etObs1;
+    private EditText etObs2;
     private TextView tvToolbar;
     private Button btnFinalzar;
     private long id;
@@ -47,7 +48,8 @@ public class DetalhesCorrida extends AppCompatActivity {
         etOrigem      = (EditText) findViewById(R.id.etOrigem);
         etDestino     = (EditText) findViewById(R.id.etDestino);
         etContato     = (EditText) findViewById(R.id.etContato);
-        etReferencia  = (EditText) findViewById(R.id.etReferencia);
+        etObs1  = (EditText) findViewById(R.id.etObs1);
+        etObs2  = (EditText) findViewById(R.id.etObs2);
         tvToolbar = (TextView) findViewById(R.id.tvToolbar);
         btnFinalzar = (Button) findViewById(R.id.btnFinalizar);
 
@@ -64,7 +66,8 @@ public class DetalhesCorrida extends AppCompatActivity {
         etOrigem.setText(corre.getRetirada().toString());
         etDestino.setText(corre.getEntrega().toString());
         etContato.setText(corre.getTelefone().toString());
-        etReferencia.setText(corre.getObs().toString());
+        etObs1.setText(corre.getObs1().toString());
+        etObs2.setText(corre.getObs2().toString());
 
         realm.close();
 

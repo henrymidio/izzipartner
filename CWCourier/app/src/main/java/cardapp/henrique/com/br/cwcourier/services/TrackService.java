@@ -3,7 +3,9 @@ package cardapp.henrique.com.br.cwcourier.services;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,20 +20,29 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import cardapp.henrique.com.br.cwcourier.pojo.Entregador;
+import io.realm.Realm;
+
 public class TrackService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     LocationRequest mLocationRequest;
     GoogleApiClient gac;
+    private long idCourier;
 
     public TrackService() {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Realm realm = Realm.getInstance(this);
+        Entregador entregador = realm.where(Entregador.class).findFirst();
+        idCourier = entregador.getId();
+        realm.close();
+
         callConnection();
         initLocationRequest();
+        return START_STICKY;
     }
 
     private synchronized void callConnection(){
@@ -46,8 +57,8 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
 
     public void initLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(4000);
+        mLocationRequest.setInterval(8000);
+        mLocationRequest.setFastestInterval(7000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -66,7 +77,8 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
         LocationServices.FusedLocationApi.requestLocationUpdates(gac, mLocationRequest, new com.google.android.gms.location.LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("Localização", "Chamada");
+                Entregador.updateLocation(getApplicationContext(), idCourier, location.getLatitude(), location.getLongitude());
+                Log.i("Service", "Rodando");
             }
         });
     }
@@ -82,6 +94,17 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
         stopSelf();
         gac.disconnect();
         Log.i("Service", "Parado");
+    }
+
+    class Worker extends Thread {
+        public Worker(){
+
+        }
+
+        @Override
+        public void run() {
+            super.run();
+        }
     }
 
     //MÉTODOS DO GOOGLE API CLIENT

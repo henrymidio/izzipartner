@@ -228,7 +228,7 @@ public class MapsActivity extends AppCompatActivity implements
             LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
             //Atualiza posição
-            Entregador.updateLocation(getApplicationContext(), id, mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            //Entregador.updateLocation(getApplicationContext(), id, mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
             if (mLastLocation != null && mo == null) {
                 mo = new MarkerOptions().position(coordenadas).title("Localização atual");
@@ -261,6 +261,7 @@ public class MapsActivity extends AppCompatActivity implements
             //Inicia o service de rastreamento
             tracker = new Intent(this, TrackService.class);
             tracker.setAction("TRACK");
+            tracker.putExtra("id", id);
             startService(tracker);
         }
         else if(v == R.id.btnSair){

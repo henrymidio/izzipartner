@@ -14,7 +14,9 @@ public class Corrida extends RealmObject {
     private String cliente_nome;
     private String retirada;
     private String entrega;
-    private String obs;
+    private String obs1;
+    private String obs2;
+
     private String telefone;
 
     public long getId() {
@@ -41,20 +43,28 @@ public class Corrida extends RealmObject {
         this.retirada = retirada;
     }
 
+    public String getObs1() {
+        return obs1;
+    }
+
+    public void setObs1(String obs1) {
+        this.obs1 = obs1;
+    }
+
+    public String getObs2() {
+        return obs2;
+    }
+
+    public void setObs2(String obs2) {
+        this.obs2 = obs2;
+    }
+
     public String getEntrega() {
         return entrega;
     }
 
     public void setEntrega(String entrega) {
         this.entrega = entrega;
-    }
-
-    public String getObs() {
-        return obs;
-    }
-
-    public void setObs(String obs) {
-        this.obs = obs;
     }
 
     public String getTelefone() {
