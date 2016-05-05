@@ -27,6 +27,8 @@ public class MyGCMListenerService extends GcmListenerService {
         .setSmallIcon(R.drawable.ic_launcher)
                 .setLargeIcon(bitmap)
                 .setContentTitle(data.getString("titulo"))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
                 .setAutoCancel(true);
 
 
@@ -37,16 +39,24 @@ public class MyGCMListenerService extends GcmListenerService {
 
         Intent intent = new Intent(this, NovaCorrida.class);
         intent.putExtra("frete", data.getString("frete"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(pi);
 
-        builder.setVibrate(new long[]{1000, 1000, 1000, 1000});
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000, 1000});
 
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.buzina);
         builder.setSound(uri);
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1, builder.build());
+
+
+        startActivity(intent);
 
 
 

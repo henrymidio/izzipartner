@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,14 +30,14 @@ import io.realm.Realm;
 
 public class DetalhesCorrida extends AppCompatActivity {
 
-    private EditText etClienteNome;
     private EditText etOrigem;
     private EditText etDestino;
-    private EditText etContato;
     private EditText etObs1;
     private EditText etObs2;
     private TextView tvToolbar;
     private Button btnFinalzar;
+    private TextView tvSolicitabte;
+    private TextView tvContato;
     private long id;
     private Realm realm;
 
@@ -44,13 +46,14 @@ public class DetalhesCorrida extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_corrida);
 
-        etClienteNome = (EditText) findViewById(R.id.etClienteNome);
         etOrigem      = (EditText) findViewById(R.id.etOrigem);
         etDestino     = (EditText) findViewById(R.id.etDestino);
-        etContato     = (EditText) findViewById(R.id.etContato);
         etObs1  = (EditText) findViewById(R.id.etObs1);
         etObs2  = (EditText) findViewById(R.id.etObs2);
+        tvSolicitabte = (TextView) findViewById(R.id.tvSolicitante);
+        tvContato = (TextView) findViewById(R.id.tvContato);
         tvToolbar = (TextView) findViewById(R.id.tvToolbar);
+
         btnFinalzar = (Button) findViewById(R.id.btnFinalizar);
 
         Bundle extras = getIntent().getExtras();
@@ -62,12 +65,12 @@ public class DetalhesCorrida extends AppCompatActivity {
         final Corrida corre = realm.where(Corrida.class).equalTo("id",id).findFirst();
 
         tvToolbar.setText("CORRIDA #"+id);
-        etClienteNome.setText(corre.getCliente_nome().toString());
         etOrigem.setText(corre.getRetirada().toString());
         etDestino.setText(corre.getEntrega().toString());
-        etContato.setText(corre.getTelefone().toString());
         etObs1.setText(corre.getObs1().toString());
         etObs2.setText(corre.getObs2().toString());
+        tvSolicitabte.setText(corre.getCliente_nome());
+        tvContato.setText(corre.getTelefone());
 
         realm.close();
 

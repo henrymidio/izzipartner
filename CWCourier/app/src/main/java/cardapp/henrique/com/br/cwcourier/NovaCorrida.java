@@ -1,5 +1,7 @@
 package cardapp.henrique.com.br.cwcourier;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -47,6 +49,12 @@ public class NovaCorrida extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_corrida);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         realm = Realm.getInstance(this);
         realm.beginTransaction();
         entregador = realm.where(Entregador.class).findFirst();
@@ -84,6 +92,8 @@ public class NovaCorrida extends AppCompatActivity {
     public void novaCorridaAction(View v){
         int id = v.getId();
         if(id == recusar.getId()){
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            nm.cancelAll();
             finish();
         }
         else if(id == aceitar.getId()) {
@@ -98,6 +108,9 @@ public class NovaCorrida extends AppCompatActivity {
     }
 
     public void aceitaCorrida(){
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancelAll();
+
         // Instantiate the RequestQueue.
         NetworkConnection nc = NetworkConnection.getInstance(getApplicationContext());
         RequestQueue queue = nc.getRequestQueue();
@@ -108,7 +121,6 @@ public class NovaCorrida extends AppCompatActivity {
             public void onResponse(String response) {
 
                 if(response.startsWith("Suc")) {
-
                     armazenaCorrida();
 
                     Intent it = new Intent(NovaCorrida.this, DetalhesCorrida.class);
