@@ -60,8 +60,8 @@ public class NetworkConnection {
                 }, 0, 0, null, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Falha no carregamento", Toast.LENGTH_SHORT).show();
-                        Log.i("Error", error.getMessage());
+                        Toast.makeText(context, "Falha no carregamento da imagem", Toast.LENGTH_SHORT).show();
+                        //Log.i("Error", error.getMessage());
 
                     }
                 });

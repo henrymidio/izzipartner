@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,35 +25,34 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+import cardapp.henrique.com.br.cwcourier.adapters.DetalhesCorridaAdapter;
 import cardapp.henrique.com.br.cwcourier.network.NetworkConnection;
 import cardapp.henrique.com.br.cwcourier.pojo.Corrida;
+import cardapp.henrique.com.br.cwcourier.pojo.Ponto;
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class DetalhesCorrida extends AppCompatActivity {
 
-    private EditText etOrigem;
-    private EditText etDestino;
-    private EditText etObs1;
-    private EditText etObs2;
     private TextView tvToolbar;
     private Button btnFinalzar;
     private TextView tvSolicitabte;
     private TextView tvContato;
+    private ListView listView;
     private long id;
     private Realm realm;
+    private RealmList<Ponto> pontos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_corrida);
 
-        etOrigem      = (EditText) findViewById(R.id.etOrigem);
-        etDestino     = (EditText) findViewById(R.id.etDestino);
-        etObs1  = (EditText) findViewById(R.id.etObs1);
-        etObs2  = (EditText) findViewById(R.id.etObs2);
         tvSolicitabte = (TextView) findViewById(R.id.tvSolicitante);
         tvContato = (TextView) findViewById(R.id.tvContato);
         tvToolbar = (TextView) findViewById(R.id.tvToolbar);
+        listView = (ListView) findViewById(R.id.lvPontos);
 
         btnFinalzar = (Button) findViewById(R.id.btnFinalizar);
 
@@ -63,16 +63,19 @@ public class DetalhesCorrida extends AppCompatActivity {
 
         realm = Realm.getInstance(this);
         final Corrida corre = realm.where(Corrida.class).equalTo("id",id).findFirst();
+        pontos = corre.getTrajeto();
+        //Log.i("RESULT", pontos.get(1).getObs());
+        //Log.i("RESULT", pontos.get(1).getEndereco());
+        RealmResults<Ponto> pt = pontos.where().findAll();
+        Log.i("RESULT", pt.get(1).getEndereco());
+
+        listView.setAdapter(new DetalhesCorridaAdapter(this, pt, true));
 
         tvToolbar.setText("CORRIDA #"+id);
-        etOrigem.setText(corre.getRetirada().toString());
-        etDestino.setText(corre.getEntrega().toString());
-        etObs1.setText(corre.getObs1().toString());
-        etObs2.setText(corre.getObs2().toString());
         tvSolicitabte.setText(corre.getCliente_nome());
         tvContato.setText(corre.getTelefone());
 
-        realm.close();
+        //realm.close();
 
         //LISTENER DE ENCERRAMENTO DO SERVIÇO
         btnFinalzar.setOnClickListener(new View.OnClickListener() {

@@ -86,6 +86,7 @@ public class NovaCorrida extends AppCompatActivity {
 
         //Criar Realm Object da nova corrida para armazenamento
         corrida = gson.fromJson(frete, Corrida.class);
+        //Log.i("FRETE", corrida.getTrajeto().get(0).getEndereco());
 
     }
 

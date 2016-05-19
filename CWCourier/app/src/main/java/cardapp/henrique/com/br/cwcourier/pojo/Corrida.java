@@ -1,5 +1,6 @@
 package cardapp.henrique.com.br.cwcourier.pojo;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,12 +13,44 @@ public class Corrida extends RealmObject {
     private long id;
 
     private String cliente_nome;
-    private String retirada;
-    private String entrega;
-    private String obs1;
-    private String obs2;
-
+    private String data;
     private String telefone;
+    private String distancia;
+    private String duracao;
+    private String valor;
+    private RealmList<Ponto> trajeto;
+
+    public RealmList<Ponto> getTrajeto() {
+        return trajeto;
+    }
+
+    public void setTrajeto(RealmList<Ponto> trajeto) {
+        this.trajeto = trajeto;
+    }
+
+    public String getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(String distancia) {
+        this.distancia = distancia;
+    }
+
+    public String getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(String duracao) {
+        this.duracao = duracao;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
 
     public long getId() {
         return id;
@@ -35,43 +68,19 @@ public class Corrida extends RealmObject {
         this.cliente_nome = cliente_nome;
     }
 
-    public String getRetirada() {
-        return retirada;
-    }
-
-    public void setRetirada(String retirada) {
-        this.retirada = retirada;
-    }
-
-    public String getObs1() {
-        return obs1;
-    }
-
-    public void setObs1(String obs1) {
-        this.obs1 = obs1;
-    }
-
-    public String getObs2() {
-        return obs2;
-    }
-
-    public void setObs2(String obs2) {
-        this.obs2 = obs2;
-    }
-
-    public String getEntrega() {
-        return entrega;
-    }
-
-    public void setEntrega(String entrega) {
-        this.entrega = entrega;
-    }
-
     public String getTelefone() {
         return telefone;
     }
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

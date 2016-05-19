@@ -1,10 +1,6 @@
-<ScrollView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -30,128 +26,70 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        android:padding="12dp">
 
-        <LinearLayout
+
+
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:layout_height="266dp"
+            android:id="@+id/lvPontos"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/relativeLayout" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_location_on_black_24dp" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Origem"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            </LinearLayout>
-
-        <EditText
-            android:id="@+id/etOrigem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/etObs1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_flag_black_24dp" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Destino"
-            android:layout_marginLeft="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            </LinearLayout>
-
-        <EditText
-            android:id="@+id/etDestino"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/etObs2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-
-
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:paddingBottom="15dp">
+        android:layout_height="131dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativeLayout">
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/usuario"
-            android:id="@+id/imageView" />
-
-        <TextView
-            android:id="@+id/tvSolicitante"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fulano"
-            android:layout_marginLeft="14dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingBottom="15dp"
+            android:layout_above="@+id/btnFinalizar"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/usuario"
+                android:id="@+id/imageView" />
+
+            <TextView
+                android:id="@+id/tvSolicitante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fulano"
+                android:layout_marginLeft="14dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_alignTop="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="(35)7678-7868"
+                android:id="@+id/tvContato"
+                android:layout_below="@+id/tvSolicitante"
+                android:layout_alignStart="@+id/tvSolicitante" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnFinalizar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="(35)7678-7868"
-            android:id="@+id/tvContato"
-            android:layout_below="@+id/tvSolicitante"
-            android:layout_alignStart="@+id/tvSolicitante" />
-
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="FINALIZAR"
+            android:background="@android:color/holo_green_light"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnFinalizar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="FINALIZAR"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
-
-</LinearLayout>
-</ScrollView>
+</RelativeLayout>
