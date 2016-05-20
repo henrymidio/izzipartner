@@ -19,6 +19,15 @@ public class Corrida extends RealmObject {
     private String duracao;
     private String valor;
     private RealmList<Ponto> trajeto;
+    private boolean aberta = true;
+
+    public boolean isAberta() {
+        return aberta;
+    }
+
+    public void setAberta(boolean aberta) {
+        this.aberta = aberta;
+    }
 
     public RealmList<Ponto> getTrajeto() {
         return trajeto;

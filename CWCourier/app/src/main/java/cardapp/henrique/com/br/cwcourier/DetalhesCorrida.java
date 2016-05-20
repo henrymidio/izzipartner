@@ -64,10 +64,8 @@ public class DetalhesCorrida extends AppCompatActivity {
         realm = Realm.getInstance(this);
         final Corrida corre = realm.where(Corrida.class).equalTo("id",id).findFirst();
         pontos = corre.getTrajeto();
-        //Log.i("RESULT", pontos.get(1).getObs());
-        //Log.i("RESULT", pontos.get(1).getEndereco());
         RealmResults<Ponto> pt = pontos.where().findAll();
-        Log.i("RESULT", pt.get(1).getEndereco());
+        //Log.i("RESULT", pt.get(1).getEndereco());
 
         listView.setAdapter(new DetalhesCorridaAdapter(this, pt, true));
 
@@ -102,13 +100,18 @@ public class DetalhesCorrida extends AppCompatActivity {
                                             public void onResponse(String response) {
 
                                                 if(response.trim().equals("1")){
-                                                    Realm realm = Realm.getInstance(DetalhesCorrida.this);
-                                                    Corrida corre = realm.where(Corrida.class).equalTo("id",id).findFirst();
-                                                    realm.beginTransaction();
-                                                    corre.removeFromRealm();
-                                                    realm.commitTransaction();
-                                                    realm.close();
+
+                                                    //Realm realm = Realm.getInstance(DetalhesCorrida.this);
+                                                    //Corrida corre = realm.where(Corrida.class).equalTo("id",id).findFirst();
+                                                    //realm.beginTransaction();
+                                                    //corre.removeFromRealm();
+                                                    //realm.commitTransaction();
+                                                    //realm.close();
+                                                    Intent in = new Intent(DetalhesCorrida.this, Corridas.class);
+                                                    in.putExtra("id", id);
+                                                    startActivity(in);
                                                     finish();
+
                                                 } else {
                                                     Toast.makeText(DetalhesCorrida.this, ""+response, Toast.LENGTH_SHORT).show();
                                                 }
@@ -140,5 +143,6 @@ public class DetalhesCorrida extends AppCompatActivity {
         });
 
     }
+
 
 }

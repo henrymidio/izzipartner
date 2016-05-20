@@ -6,10 +6,10 @@
     android:padding="10dp">
 
     <ImageView
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:id="@+id/ivPonto"
-        android:background="@drawable/marcador_amarelo"
+        android:background="@drawable/letra_0"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 

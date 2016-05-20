@@ -44,6 +44,7 @@ public class CorridasAdapter extends RealmBaseAdapter<Corrida> implements ListAd
 
         Corrida corre = realmResults.get(position);
         holder.tvCliente.setText(corre.getCliente_nome());
+        holder.tvOrigem.setText(corre.getTrajeto().get(0).getEndereco());
 
         return convertView;
     }

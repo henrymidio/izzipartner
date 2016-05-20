@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +33,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,21 +79,24 @@ public class MapsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
-        //Verifica se o usuários está logado no APLICATIVO
+
         SharedPreferences sp = getSharedPreferences("LOGIN", Context.MODE_PRIVATE);
         loggedIn = sp.getBoolean("logged", false);
 
-        if(!loggedIn){
+        //Verifica se o usuários está logado no APLICATIVO e caso não esteja envia para tela de login
+        if (!loggedIn) {
             Intent it = new Intent(this, Login.class);
             startActivity(it);
             finish();
-        }
-        else {
+        } else {
             //ESTANDO LOGADO
             //Seta o Toolbar
             Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(tb);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+            //Seta Material Drawer
+            setMaterialDrawer(tb);
 
             //Inicializa as variáveis de exibição
             ivFoto = (ImageView) findViewById(R.id.ivFoto);
@@ -100,8 +118,9 @@ public class MapsActivity extends AppCompatActivity implements
                         .addApi(LocationServices.API)
                         .build();
             }
-
         }
+
+
     }
 
     @Override
@@ -119,7 +138,6 @@ public class MapsActivity extends AppCompatActivity implements
         mGoogleApiClient.disconnect();
         super.onStop();
     }
-
 
 
     @Override
@@ -146,7 +164,7 @@ public class MapsActivity extends AppCompatActivity implements
         try {
             mMap.setMyLocationEnabled(true);
 
-        } catch (SecurityException se){
+        } catch (SecurityException se) {
             se.printStackTrace();
         }
 
@@ -165,15 +183,15 @@ public class MapsActivity extends AppCompatActivity implements
         }
     }
 
-    public void setaInformacoesUser(){
+    public void setaInformacoesUser() {
 
         Realm realm = Realm.getInstance(this);
         entregador = realm.where(Entregador.class).findFirst();
 
-        if(entregador.isValid()) {
+        if (entregador.isValid()) {
             nome = entregador.getNome();
             foto = entregador.getFoto();
-            id   = entregador.getId();
+            id = entregador.getId();
 
             //Verifica status
             alteraBotaoLogin(entregador.isStatus());
@@ -189,8 +207,8 @@ public class MapsActivity extends AppCompatActivity implements
 
     }
 
-    public void alteraBotaoLogin(boolean status){
-        if(status){
+    public void alteraBotaoLogin(boolean status) {
+        if (status) {
             btnEntrar.setVisibility(Button.GONE);
             btnSair.setVisibility(Button.VISIBLE);
             tvStatus.setText("ONLINE");
@@ -237,7 +255,7 @@ public class MapsActivity extends AppCompatActivity implements
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
 
             }
-        } catch (SecurityException se){
+        } catch (SecurityException se) {
             se.printStackTrace();
         }
     }
@@ -253,18 +271,17 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     //Tratamento do clique nos botões de logar/sair
-    public void login(View view){
+    public void login(View view) {
         int v = view.getId();
         int newState = 0;
-        if(v == R.id.btnEntrar){
+        if (v == R.id.btnEntrar) {
             newState = 1;
             //Inicia o service de rastreamento
             tracker = new Intent(this, TrackService.class);
             tracker.setAction("TRACK");
             tracker.putExtra("id", id);
             startService(tracker);
-        }
-        else if(v == R.id.btnSair){
+        } else if (v == R.id.btnSair) {
             newState = 0;
             //Interrompe o service de rastreamento
             tracker = new Intent(this, TrackService.class);
@@ -287,10 +304,9 @@ public class MapsActivity extends AppCompatActivity implements
                     @Override
                     public void onResponse(String response) {
 
-                        if(response.trim().equals("1")){
+                        if (response.trim().equals("1")) {
                             alteraBotaoLogin(true);
-                        }
-                        else {
+                        } else {
                             alteraBotaoLogin(false);
                         }
 
@@ -315,6 +331,67 @@ public class MapsActivity extends AppCompatActivity implements
         };
 
         queue.add(sr);
+    }
+
+    public void setMaterialDrawer(Toolbar tb){
+        Realm realm = Realm.getInstance(this);
+        entregador = realm.where(Entregador.class).findFirst();
+
+        //initialize and create the image loader logic
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                // Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+                NetworkConnection.setImageRequest(getApplicationContext(), uri.toString(), imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                // Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+
+        });
+
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.fundo_lollip)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(entregador.getNome()).withEmail("sac@corrertec.com.br")
+                                .withIcon(entregador.getFoto())
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
+        //create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withAccountHeader(headerResult)
+                .withActivity(this)
+                .withToolbar(tb)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName("Home").withIcon(R.drawable.ic_home_black_24dp),
+                        new PrimaryDrawerItem().withName("Extrato").withIcon(R.drawable.ic_date),
+                        new PrimaryDrawerItem().withName("Novidades").withIcon(R.drawable.ic_add_alert_black),
+                        new PrimaryDrawerItem().withName("Indique").withIcon(R.drawable.ic_favorite_black),
+                        new PrimaryDrawerItem().withName("Ajuda").withIcon(R.drawable.ic_help)
+                        //new SecondaryDrawerItem().withName("SAIR").withIcon(R.drawable.ic_input_black_48dp)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return true;
+                    }
+                })
+                .build();
+        result.addStickyFooterItem(new SecondaryDrawerItem().withName("SAIR").withIcon(R.drawable.ic_input_black_48dp));
+
+        realm.close();
     }
 
 
