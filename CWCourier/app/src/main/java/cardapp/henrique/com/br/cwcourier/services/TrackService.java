@@ -57,8 +57,8 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
 
     public void initLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(8000);
-        mLocationRequest.setFastestInterval(7000);
+        mLocationRequest.setInterval(6000);
+        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -79,6 +79,7 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
             public void onLocationChanged(Location location) {
                 Entregador.updateLocation(getApplicationContext(), idCourier, location.getLatitude(), location.getLongitude());
                 Log.i("Service", "Rodando");
+
             }
         });
     }
@@ -96,6 +97,7 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
         Log.i("Service", "Parado");
     }
 
+    /*
     class Worker extends Thread {
         public Worker(){
 
@@ -106,6 +108,7 @@ public class TrackService extends Service implements GoogleApiClient.ConnectionC
             super.run();
         }
     }
+    */
 
     //MÉTODOS DO GOOGLE API CLIENT
     @Override

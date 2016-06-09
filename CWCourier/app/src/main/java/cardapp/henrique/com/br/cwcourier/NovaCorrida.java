@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 import cardapp.henrique.com.br.cwcourier.network.NetworkConnection;
 import cardapp.henrique.com.br.cwcourier.pojo.Corrida;
 import cardapp.henrique.com.br.cwcourier.pojo.Entregador;
+import cardapp.henrique.com.br.cwcourier.services.TrackService;
 import io.realm.Realm;
 import io.realm.RealmObject;
 
@@ -49,6 +52,12 @@ public class NovaCorrida extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_corrida);
 
+        WindowManager wm= (WindowManager) getSystemService(WINDOW_SERVICE);
+        Window window=getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     }
 
@@ -124,6 +133,18 @@ public class NovaCorrida extends AppCompatActivity {
                 if(response.startsWith("Suc")) {
                     armazenaCorrida();
 
+                    //Interrompe o service de rastreamento caso já esteja ativado
+                    Intent tracker0 = new Intent(NovaCorrida.this, TrackService.class);
+                    tracker0.setAction("TRACK");
+                    stopService(tracker0);
+
+                    //Inicia o service de rastreamento
+                    Intent tracker = new Intent(NovaCorrida.this, TrackService.class);
+                    tracker.setAction("TRACK");
+                    tracker.putExtra("id", id_entregador);
+                    startService(tracker);
+
+                    //Chama nova atividade com detalhes da corrida
                     Intent it = new Intent(NovaCorrida.this, DetalhesCorrida.class);
                     it.putExtra("id", corrida.getId());
                     startActivity(it);

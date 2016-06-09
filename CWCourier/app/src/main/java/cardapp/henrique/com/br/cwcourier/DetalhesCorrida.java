@@ -29,6 +29,7 @@ import cardapp.henrique.com.br.cwcourier.adapters.DetalhesCorridaAdapter;
 import cardapp.henrique.com.br.cwcourier.network.NetworkConnection;
 import cardapp.henrique.com.br.cwcourier.pojo.Corrida;
 import cardapp.henrique.com.br.cwcourier.pojo.Ponto;
+import cardapp.henrique.com.br.cwcourier.services.TrackService;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -107,6 +108,7 @@ public class DetalhesCorrida extends AppCompatActivity {
                                                     //corre.removeFromRealm();
                                                     //realm.commitTransaction();
                                                     //realm.close();
+
                                                     Intent in = new Intent(DetalhesCorrida.this, Corridas.class);
                                                     in.putExtra("id", id);
                                                     startActivity(in);
