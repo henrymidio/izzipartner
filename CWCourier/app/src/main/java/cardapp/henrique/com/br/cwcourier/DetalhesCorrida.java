@@ -29,7 +29,6 @@ import cardapp.henrique.com.br.cwcourier.adapters.DetalhesCorridaAdapter;
 import cardapp.henrique.com.br.cwcourier.network.NetworkConnection;
 import cardapp.henrique.com.br.cwcourier.pojo.Corrida;
 import cardapp.henrique.com.br.cwcourier.pojo.Ponto;
-import cardapp.henrique.com.br.cwcourier.services.TrackService;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;

@@ -51,8 +51,8 @@ public class Login extends AppCompatActivity {
 
         checkPlayServices();
 
-        login = (EditText) findViewById(R.id.editLogin);
-        senha = (EditText) findViewById(R.id.editSenha);
+        login = (EditText) findViewById(R.id.etLogin);
+        senha = (EditText) findViewById(R.id.etSenha);
 
     }
 

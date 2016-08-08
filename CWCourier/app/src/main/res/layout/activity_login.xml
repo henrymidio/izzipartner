@@ -1,60 +1,100 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    >
+<?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/biker"
+    android:padding="15dp">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cadastrar"
+        android:id="@+id/btnCadastrar"
+        android:textSize="18dp"
+        android:padding="15dp"
+        android:textColor="#fefefe"
+        android:background="@drawable/button_bg_transparent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tilSenha"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tilLogin">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editLogin"
-        android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp" />
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/etLogin"
+        android:backgroundTint="@android:color/white"
+        android:hint="Login"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tilLogin"
+        android:layout_alignStart="@+id/tilLogin"
+        android:layout_marginTop="50dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/tilSenha">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editSenha"
-        android:singleLine="true"
-        android:layout_below="@+id/editLogin"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp" />
+        android:id="@+id/etSenha"
+        android:backgroundTint="@android:color/white"
+        android:hint="Senha"
+        android:textColorHint="#ffffff"
+        android:textColor="#ffffff" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Esqueceu sua senha?"
+        android:id="@+id/textView61"
+        android:layout_above="@+id/btnCadastrar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Ecodelivery"
+        android:id="@+id/textView62"
+        android:textSize="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ENTRAR"
+        android:text="Logar"
         android:id="@+id/btnEntrar"
         android:onClick="logar"
-        android:layout_below="@+id/editSenha"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Login"
-        android:id="@+id/textView8"
-        android:layout_alignBottom="@+id/editLogin"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="44dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Senha"
-        android:id="@+id/textView9"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="44dp"/>
+        android:layout_below="@+id/tilSenha"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>

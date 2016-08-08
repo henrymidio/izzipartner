@@ -1,14 +1,18 @@
 package cardapp.henrique.com.br.cwcourier;
 
 
+import android.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -243,20 +247,25 @@ public class MapsActivity extends AppCompatActivity implements
         try {
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
-            LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-            //Atualiza posição
-            Entregador.updateLocation(getApplicationContext(), id, mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                LatLng coordenadas = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-            if (mLastLocation != null && mo == null) {
-                mo = new MarkerOptions().position(coordenadas).title("Localização atual");
-                mMap.addMarker(mo);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
+                //Atualiza posição
+                //Entregador.updateLocation(getApplicationContext(), id, mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-            }
+                if (mo == null) {
+                    mo = new MarkerOptions().position(coordenadas).title("Localização atual");
+                    mMap.addMarker(mo);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
+
+                }
+
         } catch (SecurityException se) {
             se.printStackTrace();
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -276,13 +285,18 @@ public class MapsActivity extends AppCompatActivity implements
         int newState = 0;
         if (v == R.id.btnEntrar) {
             newState = 1;
-            //Inicia o service de rastreamento
-            /*
+
             tracker = new Intent(this, TrackService.class);
+
+            //Paraliza o service de rastreamento
+            tracker.setAction("TRACK");
+            stopService(tracker);
+
+            //Inicia o service de rastreamento
             tracker.setAction("TRACK");
             tracker.putExtra("id", id);
             startService(tracker);
-            */
+
         } else if (v == R.id.btnSair) {
             newState = 0;
             //Interrompe o service de rastreamento
@@ -361,7 +375,7 @@ public class MapsActivity extends AppCompatActivity implements
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.fundo_lollip)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(entregador.getNome()).withEmail("sac@corrertec.com.br")
+                        new ProfileDrawerItem().withName(entregador.getNome()).withEmail("suporte@ecodelivery.com")
                                 .withIcon(entregador.getFoto())
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
